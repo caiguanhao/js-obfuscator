@@ -8,17 +8,21 @@ module.exports = function(grunt) {
     'Obfuscate JavaScript files via javascriptobfuscator.com.',
     function() {
 
+    var options = this.options();
+    var cc = options.concurrency;
+    cc = /^[0-9]+$/.test(cc) && (cc > 0 && cc < 100) ? cc : 2;
+
     var queue = async.queue(function(task, callback) {
       var content = task.src.map(function(src) {
         return grunt.file.read(src);
       }).join('\n;\n')
-      jsObfuscate(content).
+      jsObfuscate(content, options).
         then(function(obfuscated) {
           grunt.file.write(task.dest, obfuscated);
         }).
         then(callback).
         catch(callback);
-    }, 2);
+    }, cc);
 
     queue.drain = this.async();
 

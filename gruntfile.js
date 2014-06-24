@@ -6,6 +6,20 @@ module.exports = function(grunt) {
     },
     jsObfuscate: {
       test: {
+        options: {
+          concurrency: 2,
+          keepLinefeeds: false,
+          keepIndentations: false,
+          encodeStrings: true,
+          encodeNumbers: true,
+          moveStrings: true,
+          replaceNames: true,
+          variableExclusions: [
+            '^_get_',
+            '^_set_',
+            '^_mtd_'
+          ]
+        },
         files: {
           'test/output/test.js': [
             'test/bind.js',

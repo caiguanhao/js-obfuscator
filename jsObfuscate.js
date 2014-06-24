@@ -91,7 +91,32 @@ function getResult(content) {
   return deferred.promise;
 }
 
+function sanitizeOptions(options) {
+  var defaults = {
+    keepLinefeeds:      false,
+    keepIndentations:   false,
+    encodeStrings:      true,
+    encodeNumbers:      true,
+    moveStrings:        true,
+    replaceNames:       true,
+    variableExclusions: [ '^_get_', '^_set_', '^_mtd_' ]
+  };
+  if (!options || options instanceof Array || typeof options !== 'object') {
+    return defaults;
+  }
+  for (var def in defaults) {
+    if (!options.hasOwnProperty(def)) continue;
+    if (defaults[def] instanceof Array && !(options[def] instanceof Array)) {
+      continue;
+    }
+    if (typeof defaults[def] !== typeof options[def]) continue;
+    defaults[def] = options[def];
+  }
+  return defaults;
+}
+
 function obfuscate(strInput, options) {
+  options = sanitizeOptions(options);
   return request().
   then(function(res) {
     var headers = {};
@@ -107,14 +132,18 @@ function obfuscate(strInput, options) {
     });
   }).
   then(function(bundle) {
+    if (options.keepLinefeeds)    bundle.formData['cbLineBR']       = 'on';
+    if (options.keepIndentations) bundle.formData['cbIndent']       = 'on';
+    if (options.encodeStrings)    bundle.formData['cbEncodeStr']    = 'on';
+    if (options.encodeNumbers)    bundle.formData['cbEncodeNumber'] = 'on';
+    if (options.moveStrings)      bundle.formData['cbMoveStr']      = 'on';
+    if (options.replaceNames)     bundle.formData['cbReplaceNames'] = 'on';
+
     bundle.formData['UploadLib_Uploader_js'] = '1';
     bundle.formData['TextBox1'] = strInput;
     bundle.formData['TextBox2'] = '';
-    bundle.formData['cbEncodeStr'] = 'on';
-    bundle.formData['cbEncodeNumber'] = 'on';
-    bundle.formData['cbMoveStr'] = 'on';
-    bundle.formData['cbReplaceNames'] = 'on';
-    bundle.formData['TextBox3'] = '^_get_\r\n^_set_\r\n^_mtd_';
+    bundle.formData['TextBox3'] = options.variableExclusions.join('\n');
+
     return bundle;
   }).
   then(function(bundle) {
