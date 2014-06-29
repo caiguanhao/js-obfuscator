@@ -2,11 +2,26 @@ js-obfuscator
 =============
 
 Obfuscate JavaScript files via [javascriptobfuscator.com](
-http://www.javascriptobfuscator.com/). This is also a Grunt plugin.
+http://www.javascriptobfuscator.com/).
 
-## Getting Started
+You can install it globally as a command:
 
-This plugin requires Grunt `~0.4.0`
+```
+npm install -g js-obfuscator
+echo "var fs = require('fs')" | jsobfuscate -o keepIndentations=false
+var _0x40c7=["\x66\x73"];var fs=require(_0x40c7[0]);
+```
+
+Or install it as a dependency:
+
+```
+npm install js-obfuscator --save
+var jsObfuscator = require('js-obfuscator');
+jsObfuscator ( <string> input [, <object> options ] )
+Returns: a Q promise.
+```
+
+Or you can use it with Grunt `~0.4.0`:
 
 If you haven't used [Grunt](http://gruntjs.com/) before, be sure to check out
 the [Getting Started](http://gruntjs.com/getting-started) guide, as it explains
@@ -24,14 +39,6 @@ with this line of JavaScript:
 ```js
 grunt.loadNpmTasks('js-obfuscator');
 ```
-
-## Call
-
-```
-var jsObfuscator = require('js-obfuscator');
-jsObfuscator ( <string> input [, <object> options ] )
-```
-Returns: a Q promise.
 
 ## Options
 
@@ -58,6 +65,25 @@ Type: `Array`   Default: `[ '^_get_', '^_set_', '^_mtd_' ]`
 
 ### concurrency (for Grunt plugin only)
 Type: `Number`  Default: `2`  Range: `1 - 99`
+
+## Command
+
+```
+$ jsobfuscate -h
+Usage: jsobfuscate [OPTIONS] [FILES]
+
+Obfuscate JavaScript files via javascriptobfuscator.com.
+Read from STDIN if no files specified.
+
+Default Options:
+  -o keepLinefeeds=false
+  -o keepIndentations=false
+  -o encodeStrings=true
+  -o encodeNumbers=true
+  -o moveStrings=true
+  -o replaceNames=true
+  -o variableExclusions="['^_get_', '^_set_', '^_mtd_']"
+```
 
 ## Examples
 
