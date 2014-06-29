@@ -1,6 +1,6 @@
 {
   "name": "js-obfuscator",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Obfuscate JavaScript files via javascriptobfuscator.com. This is also a Grunt plugin.",
   "main": "jsObfuscate.js",
   "repository": {
@@ -8,7 +8,7 @@
     "url": "https://github.com/caiguanhao/js-obfuscator.git"
   },
   "bin": {
-    "jsobfuscate" : "bin/jsobfuscate"
+    "jsobfuscate": "bin/jsobfuscate"
   },
   "keywords": [
     "JavaScript",
