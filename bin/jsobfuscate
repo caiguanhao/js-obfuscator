@@ -1,0 +1,76 @@
+#!/usr/bin/env node
+
+var Q           = require('q');
+var fs          = require('fs');
+var jsObfuscate = require('../jsObfuscate');
+var $0          = require('path').basename(process.argv[1]);
+var args        = process.argv.slice(2);
+var options     = jsObfuscate.defaultOptions;
+
+for (var i = args.length - 1; i >= 0; i--) {
+  switch (args[i]) {
+  case '-h':
+  case '--help':
+    var l = console.log;
+    l('Usage: ' + $0 + ' [OPTIONS] [FILES]');
+    l();
+    l('Obfuscate JavaScript files via javascriptobfuscator.com.')
+    l('Read from STDIN if no files specified.');
+    l();
+    l('Default Options:');
+    l('  -o keepLinefeeds=false');
+    l('  -o keepIndentations=false');
+    l('  -o encodeStrings=true');
+    l('  -o encodeNumbers=true');
+    l('  -o moveStrings=true');
+    l('  -o replaceNames=true');
+    l('  -o variableExclusions="[\'^_get_\', \'^_set_\', \'^_mtd_\']"');
+    process.exit(0);
+  case '-o':
+    var option = args[i + 1];
+    if (!option) throw 'option not provided';
+    if (option.indexOf('=') === -1) throw 'option should be "key=value"';
+    option   = option.split('=', 2);
+    var key  = option[0], value;
+    var type = Object.prototype.toString.call(options[key]);
+    if (!options.hasOwnProperty(key)) throw 'unknown option "' + key + '"';
+    try {
+      value = new Function('return ' + option[1] + ';')();
+      if (Object.prototype.toString.call(value) !== type) throw '';
+    } catch (e) {
+      throw 'option "' + key + '" should be of type `' + type + '`';
+    }
+    options[key] = value;
+    args.splice(i, 2);
+    break;
+  default:
+    if (args[i][0] === '-') throw 'unknown option "' + args[i] + '"';
+  }
+}
+
+var files   = args;
+var content = '';
+var promise;
+
+if (files.length === 0) {
+  promise = Q.fcall(function() {
+    var deferred = Q.defer();
+    process.stdin.setEncoding('utf8');
+    process.stdin.on('readable', function() {
+      var chunk = process.stdin.read();
+      if (chunk) content += chunk;
+    });
+    process.stdin.on('end', function() {
+      deferred.resolve(content);
+    });
+    return deferred.promise;
+  });
+} else {
+  promise = Q(files.map(function(src) {
+    return fs.readFileSync(src).toString();
+  }).join('\n;\n'));
+}
+
+promise.then(function(content) {
+  return jsObfuscate(content, options);
+}).then(console.log).catch(console.error);

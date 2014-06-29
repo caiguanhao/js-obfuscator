@@ -165,3 +165,4 @@ function obfuscate(strInput, options) {
 }
 
 module.exports = obfuscate;
+module.exports.defaultOptions = sanitizeOptions();

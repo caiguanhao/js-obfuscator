@@ -7,6 +7,9 @@
     "type": "git",
     "url": "https://github.com/caiguanhao/js-obfuscator.git"
   },
+  "bin": {
+    "jsobfuscate" : "bin/jsobfuscate"
+  },
   "keywords": [
     "JavaScript",
     "obfuscate",
@@ -33,6 +36,7 @@
     "grunt-contrib-clean": "^0.5.0"
   },
   "files": [
+    "bin",
     "tasks",
     "jsObfuscate.js",
     "README.md",
