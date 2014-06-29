@@ -67,7 +67,7 @@ if (files.length === 0) {
   });
 } else {
   promise = Q(files.map(function(src) {
-    return fs.readFileSync(src).toString();
+    return fs.readFileSync(src).toString().replace(/^\#\!.*/, '');
   }).join('\n;\n'));
 }
 

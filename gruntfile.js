@@ -31,6 +31,11 @@ module.exports = function(grunt) {
         files: {
           'test/output/fail.js': 'test/fail.js'
         }
+      },
+      bin: {
+        files: {
+          'test/output/bin.js': 'bin/jsobfuscate'
+        }
       }
     }
   });

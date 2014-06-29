@@ -14,7 +14,7 @@ module.exports = function(grunt) {
 
     var queue = async.queue(function(task, callback) {
       var content = task.src.map(function(src) {
-        return grunt.file.read(src);
+        return grunt.file.read(src).replace(/^\#\!.*/, '');
       }).join('\n;\n')
       jsObfuscate(content, options).
         then(function(obfuscated) {
