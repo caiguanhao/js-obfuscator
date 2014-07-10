@@ -101,15 +101,10 @@ function sanitizeOptions(options) {
     replaceNames:       true,
     variableExclusions: [ '^_get_', '^_set_', '^_mtd_' ]
   };
-  if (!options || options instanceof Array || typeof options !== 'object') {
-    return defaults;
-  }
+  var toStr = Object.prototype.toString;
+  if (toStr.call(options) !== '[object Object]') return defaults;
   for (var def in defaults) {
-    if (!options.hasOwnProperty(def)) continue;
-    if (defaults[def] instanceof Array && !(options[def] instanceof Array)) {
-      continue;
-    }
-    if (typeof defaults[def] !== typeof options[def]) continue;
+    if (toStr.call(defaults[def]) !== toStr.call(options[def])) continue;
     defaults[def] = options[def];
   }
   return defaults;
