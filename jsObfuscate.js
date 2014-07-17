@@ -33,6 +33,9 @@ function request(method, postData, reqHeaders) {
       });
     });
   });
+  req.on('error', function (err) {
+      deferred.reject(err);
+  });
   if (postData) {
     req.write(querystring.stringify(postData));
   }
