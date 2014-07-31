@@ -69,7 +69,9 @@ if (files.length === 0) {
     });
     return deferred.promise;
   });
-  console.error('Type or paste JavaScript code and press Ctrl-D to obfuscate.');
+  if (process.stdin.isTTY)
+    console.error('Type or paste JavaScript code and then press Ctrl-D to ' +
+      'obfuscate.');
 } else {
   promise = Q(files.map(function(src) {
     return fs.readFileSync(src).toString().replace(/^\#\!.*/, '');
