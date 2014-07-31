@@ -26,10 +26,11 @@
   },
   "homepage": "https://github.com/caiguanhao/js-obfuscator",
   "dependencies": {
-    "htmlparser2": "^3.7.2",
-    "q": "^1.0.1",
+    "async": "^0.9.0",
+    "char-spinner": "^1.0.1",
     "entities": "^1.1.1",
-    "async": "^0.9.0"
+    "htmlparser2": "^3.7.2",
+    "q": "^1.0.1"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
