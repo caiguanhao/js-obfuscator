@@ -15,7 +15,7 @@ for (var i = args.length - 1; i >= 0; i--) {
     var l = console.log;
     l('Usage: ' + $0 + ' [OPTIONS] [FILES]');
     l();
-    l('Obfuscate JavaScript files via javascriptobfuscator.com.')
+    l('Obfuscate JavaScript files via javascriptobfuscator.com.');
     l('Read from STDIN if no files specified.');
     l();
     l('Default Options:');
@@ -26,6 +26,9 @@ for (var i = args.length - 1; i >= 0; i--) {
     l('  -o moveStrings=true');
     l('  -o replaceNames=true');
     l('  -o variableExclusions="[\'^_get_\', \'^_set_\', \'^_mtd_\']"');
+    l();
+    l('Notice: It is possible that your code can be viewed and/or stored by');
+    l('javascriptobfuscator.com. Please DO NOT include any sensitive data.');
     process.exit(0);
   case '-o':
     var option = args[i + 1];
@@ -66,14 +69,17 @@ if (files.length === 0) {
     });
     return deferred.promise;
   });
+  console.error('Type or paste JavaScript code and press Ctrl-D to obfuscate.');
 } else {
   promise = Q(files.map(function(src) {
     return fs.readFileSync(src).toString().replace(/^\#\!.*/, '');
   }).join('\n;\n'));
 }
 
-charSpinner();
-
 promise.then(function(content) {
+  try {
+    process.stdout.clearLine(); // clear possible ^D char
+    charSpinner();
+  } catch(e) {}
   return jsObfuscate(content, options);
 }).then(console.log).catch(console.error);
