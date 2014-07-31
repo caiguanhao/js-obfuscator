@@ -4,6 +4,12 @@ js-obfuscator
 Obfuscate JavaScript files via [javascriptobfuscator.com](
 http://www.javascriptobfuscator.com/).
 
+**IMPORTANT**: It is possible that your code can be viewed and/or stored by
+javascriptobfuscator.com. Please DO NOT include any sensitive data. If you
+care about your code, split and uglify them before obfuscating.
+
+---
+
 You can install it globally as a command:
 
 ```
