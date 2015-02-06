@@ -17,7 +17,7 @@ function request(method, postData, reqHeaders) {
   var req = http.request({
     host: 'www.javascriptobfuscator.com',
     port: 80,
-    path: '/',
+    path: '/Javascript-Obfuscator.aspx',
     method: method || 'GET',
     headers: headers
   }, function(res) {
@@ -76,7 +76,7 @@ function getResult(content) {
   var deferred = Q.defer();
   var parser = new htmlparser.Parser({
     onopentag: function(name, attribs) {
-      if (name === 'textarea' && attribs.name === 'TextBox2') {
+      if (name === 'textarea' && attribs.name === 'ctl00$breadcrumbs$TextBox2') {
         getText = true;
       }
     },
@@ -130,17 +130,18 @@ function obfuscate(strInput, options) {
     });
   }).
   then(function(bundle) {
-    if (options.keepLinefeeds)    bundle.formData['cbLineBR']       = 'on';
-    if (options.keepIndentations) bundle.formData['cbIndent']       = 'on';
-    if (options.encodeStrings)    bundle.formData['cbEncodeStr']    = 'on';
-    if (options.encodeNumbers)    bundle.formData['cbEncodeNumber'] = 'on';
-    if (options.moveStrings)      bundle.formData['cbMoveStr']      = 'on';
-    if (options.replaceNames)     bundle.formData['cbReplaceNames'] = 'on';
+    if (options.keepLinefeeds)    bundle.formData['ctl00$MainContent$cbLineBR']       = 'on';
+    if (options.keepIndentations) bundle.formData['ctl00$MainContent$cbIndent']       = 'on';
+    if (options.encodeStrings)    bundle.formData['ctl00$MainContent$cbEncodeStr']    = 'on';
+    if (options.encodeNumbers)    bundle.formData['ctl00$MainContent$cbEncodeNumber'] = 'on';
+    if (options.moveStrings)      bundle.formData['ctl00$MainContent$cbMoveStr']      = 'on';
+    if (options.replaceNames)     bundle.formData['ctl00$MainContent$cbReplaceNames'] = 'on';
 
     bundle.formData['UploadLib_Uploader_js'] = '1';
-    bundle.formData['TextBox1'] = strInput;
-    bundle.formData['TextBox2'] = '';
-    bundle.formData['TextBox3'] = options.variableExclusions.join('\n');
+    bundle.formData['__EVENTTARGET'] = 'ctl00$breadcrumbs$Button1';
+    bundle.formData['ctl00$breadcrumbs$TextBox1'] = strInput;
+    bundle.formData['ctl00$breadcrumbs$TextBox2'] = '';
+    bundle.formData['ctl00$MainContent$TextBox3'] = options.variableExclusions.join('\n');
 
     return bundle;
   }).
