@@ -118,12 +118,11 @@ function obfuscate(strInput, options) {
   return request().
   then(function(res) {
     var headers = {};
-	if(res.headers['set-cookie']){
-		var cookie = res.headers['set-cookie'][0];
-		var cookiedata = cookie.slice(0, cookie.indexOf(';'));
-		headers['Cookie'] = cookiedata;
-	}
-    
+    if (res.headers['set-cookie']) {
+      var cookie = res.headers['set-cookie'][0];
+      var cookiedata = cookie.slice(0, cookie.indexOf(';'));
+      headers['Cookie'] = cookiedata;
+    }
     headers['Content-Type'] = 'application/x-www-form-urlencoded';
     return getFormData(res.body).then(function(formData) {
       return {
