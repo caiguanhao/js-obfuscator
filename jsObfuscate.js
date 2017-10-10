@@ -76,7 +76,7 @@ function getResult(content) {
   var deferred = Q.defer();
   var parser = new htmlparser.Parser({
     onopentag: function(name, attribs) {
-      if (name === 'textarea' && attribs.name === 'ctl00$breadcrumbs$TextBox2') {
+      if (name === 'textarea' && attribs.name === 'ctl00$MainContent$TextBox2') {
         getText = true;
       }
     },
@@ -140,9 +140,9 @@ function obfuscate(strInput, options) {
     if (options.replaceNames)     bundle.formData['ctl00$MainContent$cbReplaceNames'] = 'on';
 
     bundle.formData['UploadLib_Uploader_js'] = '1';
-    bundle.formData['__EVENTTARGET'] = 'ctl00$breadcrumbs$Button1';
-    bundle.formData['ctl00$breadcrumbs$TextBox1'] = strInput;
-    bundle.formData['ctl00$breadcrumbs$TextBox2'] = '';
+    bundle.formData['__EVENTTARGET'] = 'ctl00$MainContent$Button1';
+    bundle.formData['ctl00$MainContent$TextBox1'] = strInput;
+    bundle.formData['ctl00$MainContent$TextBox2'] = '';
     bundle.formData['ctl00$MainContent$TextBox3'] = options.variableExclusions.join('\n');
 
     return bundle;
