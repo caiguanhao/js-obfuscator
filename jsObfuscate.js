@@ -1,5 +1,5 @@
 var Q           = require('q');
-var http        = require('http');
+var https       = require('https');
 var entities    = require('entities');
 var querystring = require('querystring');
 var htmlparser  = require('htmlparser2');
@@ -14,9 +14,9 @@ function request(method, postData, reqHeaders) {
   for (var h in reqHeaders) {
     headers[h] = reqHeaders[h];
   }
-  var req = http.request({
+  var req = https.request({
     host: 'www.javascriptobfuscator.com',
-    port: 80,
+    port: 443,
     path: '/Javascript-Obfuscator.aspx',
     method: method || 'GET',
     headers: headers
