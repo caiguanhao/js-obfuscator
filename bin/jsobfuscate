@@ -61,8 +61,10 @@ if (files.length === 0) {
     var deferred = Q.defer();
     process.stdin.setEncoding('utf8');
     process.stdin.on('readable', function() {
-      var chunk = process.stdin.read();
-      if (chunk) content += chunk;
+      var chunk;
+      while ((chunk = process.stdin.read()) !== null) {
+        content += chunk;
+      }
     });
     process.stdin.on('end', function() {
       deferred.resolve(content);
